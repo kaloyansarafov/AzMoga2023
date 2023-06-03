@@ -28,7 +28,7 @@
         {
             var random = new Random();
             var numbersData = new string[rows, cols];
-            var operations = new List<string> {"1", "-1", "x2", "x0", "/2"};
+            var operations = new List<string> {"+1 ", "-1 ", "x2 ", "x0 ", "/2 "};
             var operationTypes = new List<string> {"+", "-", "*", "/"};
 
             // Add one of each operation to the grid

@@ -1,4 +1,6 @@
-﻿namespace AzMogaTukITam.Model
+﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+
+namespace AzMogaTukITam.Model
 {
     public class Game
     {
@@ -111,7 +113,6 @@
             }
             else
             {
-                // THIS LOGIC GETS SAVED
                 for (int y = 0; y < rows; y++)
                 {
                     for (int x = 0; x < cols; x++)
@@ -123,7 +124,7 @@
                             || previousValue.DisplayBackground != currentValue.DisplayBackground 
                             || previousValue.DisplayForeground != currentValue.DisplayForeground)
                         {
-                            Console.SetCursorPosition((x * 3) + 1, y + 4);
+                            Console.SetCursorPosition((5 * x) + 2, y + 4);
                             Console.BackgroundColor = currentValue.DisplayBackground;
                             Console.ForegroundColor = currentValue.DisplayForeground;
                             Console.Write($" {currentValue.Value} ");

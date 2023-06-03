@@ -26,7 +26,7 @@
                     {
                         if (layer.Data[y, x] && (layer is BaseLayer))
                         {
-                            finalGrid[y, x] = layer.DisplayValue;
+                            finalGrid[y, x] = ((BaseLayer)layer).DisplayData[y, x];
                         }
                         else if (layer.Data[y, x] && !(layer is BaseLayer))
                         {
