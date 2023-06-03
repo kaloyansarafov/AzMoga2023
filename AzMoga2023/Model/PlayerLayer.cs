@@ -111,7 +111,7 @@
                 case ConsoleKey.Enter:
 
 
-                    if (IsPlaceOccupied(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X))
+                    if (IsPlaceOccupied(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X) || game.Grid.Layers.First(x => x is BlockLayer).Data[selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X])
                     {
                         game.DrawMessage($"{PlayerName} shall not be placing here, it's either occupied by the opponent or the player himself!", 6000);
                         break;
@@ -179,8 +179,6 @@
                         });
 
                     var blockLayer = (BlockLayer)game.Grid.Layers.First(l => l is BlockLayer);
-                    //foreach (var coord in this.GetAttackedCoords(game.Grid))
-                    //    blockLayer.Block(coord);
                     blockLayer.Block(selectedLayer.CurrentPointer);
                     blockLayer.Block(new Coordinates(0, 0));
                     blockLayer.Block(new Coordinates(game.Grid.Height - 1, game.Grid.Width - 1));
