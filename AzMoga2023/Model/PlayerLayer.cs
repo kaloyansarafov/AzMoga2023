@@ -144,7 +144,7 @@
                     //    blockLayer.Block(coord);
                     blockLayer.Block(selectedLayer.CurrentPointer);
                     blockLayer.Block(new Coordinates(0, 0));
-                    blockLayer.Block(new Coordinates(game.Grid.Width - 1, game.Grid.Height - 1));
+                    blockLayer.Block(new Coordinates(game.Grid.Height - 1, game.Grid.Width - 1));
                     BlockedCoordinates.Add(selectedLayer.CurrentPointer);
                     this.OnTurnDone();
 

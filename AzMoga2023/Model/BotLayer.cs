@@ -12,6 +12,7 @@
         {
             DisplayValue = dv;
             PlayerName = pn;
+            Data[grid.Height - 1, grid.Width - 1] = true;
         }
 
         public override int ZIndex { get; protected set; } = 150;
@@ -24,28 +25,34 @@
 
         public string PlayerName { get; private set; }
         
-        public int score = 0;
+        public int Score = 0;
+        public HashSet<Coordinates> BlockedCoordinates = new();
 
-        public HashSet<int> AttackedRows = new();
-        public HashSet<int> AttackedColumns = new();
-        public HashSet<int> AttackedLeftDiagonals = new();
-        public HashSet<int> AttackedRightDiagonals = new();
-
-        // Override props
 
         private void HandleUpdate(Game game)
         {
-            game.DrawMessage("Bot's thinking about it...", 1000);   
-            var botChoice = FindBestPlaceFromCoordinates(game.Grid);
+            game.DrawMessage("Bot's thinking about it...", 1000);
+            Coordinates playerPosition = null;
+            for (int i = 0; i < game.Grid.Height; i++)
+            for (int o = 0; o < game.Grid.Width; o++)
+                if (this.Data[i, o])
+                    playerPosition = new Coordinates() { Y = i, X = o };
+            
+            var botChoice = FindBestPlaceFromCoordinates(game.Grid, playerPosition);
 
             if (botChoice == null)
             {
                 return;
             }
-            MarkPositions(botChoice.Y, botChoice.X);
+            for (int i = 0; i < game.Grid.Height; i++)
+                for (int o = 0; o < game.Grid.Width; o++)
+                    this.Data[i, o] = false;
             Data[botChoice.Y, botChoice.X] = true;
+            BlockedCoordinates.Add(new Coordinates(botChoice.Y, botChoice.X));
+
             
             var blockLayer = (BlockLayer)game.Grid.Layers.First(l => l is BlockLayer);
+            blockLayer.Block(botChoice);
 
           
             
@@ -98,30 +105,30 @@
                     switch (operation)
                     {
                         case '*':
-                            if (score * operand > bestScore)
+                            if (Score * operand > bestScore)
                             {
-                                bestScore = score * operand;
+                                bestScore = Score * operand;
                                 bestPlace = new Coordinates(i, j);
                             }
                             break;
                         case '/':
-                            if (score / operand > bestScore)
+                            if (Score / operand > bestScore)
                             {
-                                bestScore = score / operand;
+                                bestScore = Score / operand;
                                 bestPlace = new Coordinates(i, j);
                             }
                             break;
                         case '+':
-                            if (score + operand > bestScore)
+                            if (Score + operand > bestScore)
                             {
-                                bestScore = score + operand;
+                                bestScore = Score + operand;
                                 bestPlace = new Coordinates(i, j);
                             }
                             break;
                         case '-':
-                            if (score - operand > bestScore)
+                            if (Score - operand > bestScore)
                             {
-                                bestScore = score - operand;
+                                bestScore = Score - operand;
                                 bestPlace = new Coordinates(i, j);
                             }
                             break;
@@ -134,26 +141,7 @@
 
         public bool IsPlaceOccupied(int row, int col)
         {
-            return (AttackedRows.Contains(row) ||
-                        AttackedColumns.Contains(col) ||
-                        AttackedLeftDiagonals.Contains(col - row) ||
-                        AttackedRightDiagonals.Contains(col + row));
-        }
-
-        private void MarkPositions(int row, int col)
-        {
-            AttackedRows.Add(row);
-            AttackedColumns.Add(col);
-            AttackedLeftDiagonals.Add(col - row);
-            AttackedRightDiagonals.Add(col + row);
-        }
-
-        private IEnumerable<Coordinates> GetAttackedCoords(Grid grid)
-        {
-            for (int i = 0; i < grid.Height; i++)
-                for (int o = 0; o < grid.Width; o++)
-                    if (IsPlaceOccupied(i, o)) 
-                        yield return new Coordinates(i, o);
+            return BlockedCoordinates.Contains(new Coordinates(row, col));
         }
 
         //returns the score of a place, where it blocks the most open spaces in the 4 directions and diagonals

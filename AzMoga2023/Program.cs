@@ -18,6 +18,7 @@ switch (selection)
         mainGame.Grid.Layers.Add(new PlayerLayer(mainGame.Grid, new DisplayValue() { Value = "X", DisplayBackground = ConsoleColor.DarkBlue, DisplayForeground = ConsoleColor.White }, "Player 1"));
         mainGame.Grid.Layers.Add(new BotLayer(mainGame.Grid, new DisplayValue() { Value = "X", DisplayBackground = ConsoleColor.DarkRed, DisplayForeground = ConsoleColor.White }, "Bot 1"));
         mainGame.Grid.Layers.Add(new SelectedLayer(mainGame.Grid));
+        mainGame.Grid.Layers.Where(x => x is PlayerLayer).First(x => ((PlayerLayer)x).PlayerName == "Player 1").Data[0, 0] = true;
         mainGame.Start();
         break;
     case "2":

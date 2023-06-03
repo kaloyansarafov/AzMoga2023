@@ -111,11 +111,11 @@ namespace AzMogaTukITam.Model
                 }
                 Console.WriteLine($".-{new string('-', (cols * 5) - 2)}-.");
                 
-                var players = this.Grid.Layers.Where(x => x is PlayerLayer).ToArray();
-                string scoresMessage = $"| {((PlayerLayer)players[0]).PlayerName} Score: PH  | {((PlayerLayer)players[1]).PlayerName} Score: PH |";
-                Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
-                Console.WriteLine(scoresMessage);
-                Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
+                var players = this.Grid.Layers.Where(x => x is IPlayerLayer).ToArray();
+                //string scoresMessage = $"| {((PlayerLayer)players[0]).PlayerName} Score: PH  | {((PlayerLayer)players[1]).PlayerName} Score: PH |";
+                //Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
+                //Console.WriteLine(scoresMessage);
+                //Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
             }
             else
             {
