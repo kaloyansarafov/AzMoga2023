@@ -28,6 +28,10 @@ switch (selection)
         playerGame.Grid.Layers.Add(new PlayerLayer(playerGame.Grid, new DisplayValue() { Value= "X", DisplayBackground = ConsoleColor.DarkBlue, DisplayForeground = ConsoleColor.White }, "Player 1"));
         playerGame.Grid.Layers.Add(new PlayerLayer(playerGame.Grid, new DisplayValue() { Value = "X", DisplayBackground = ConsoleColor.DarkRed, DisplayForeground = ConsoleColor.White }, "Player 2"));
         playerGame.Grid.Layers.Add(new SelectedLayer(playerGame.Grid));
+        playerGame.Grid.Layers.Where(x => x is PlayerLayer).Where(x => ((PlayerLayer)x).PlayerName == "Player 1").First().Data[0, 0] = true;
+        playerGame.Grid.Layers.Where(x => x is PlayerLayer).Where(x => ((PlayerLayer)x).PlayerName == "Player 2").First().Data[gridSize[0] - 1, gridSize[1] - 1] = true;
+
+
         playerGame.Start();
         break;
     case "3":

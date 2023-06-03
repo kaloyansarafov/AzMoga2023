@@ -66,30 +66,7 @@
         {
             var selectedLayer = (SelectedLayer)game.Grid.Layers.First(l => l is SelectedLayer);
 
-        //find the coords of the player in Data
-
-            if (_currentTurn == 0 && PlayerName == "Player 1")
-            {
-                game.DrawMessage($"{PlayerName} shall choose next!", 2000);
-                selectedLayer.SetCurrentPointer(new Coordinates() { Y = 0, X = 0 });
-                this.Data[0,0] = true;
-                _currentTurn++;
-                IPlayerLayer[] playerLayers = game.Grid.Layers.Where(x => x is IPlayerLayer).Cast<IPlayerLayer>().ToArray();
-                return;
-            }
-            else if(_currentTurn == 0 && PlayerName == "Player 2")
-            {
-                this.Data[game.Grid.Height - 1, game.Grid.Width - 1] = true;
-                selectedLayer.SetCurrentPointer(new Coordinates() { Y = game.Grid.Height -1, X = game.Grid.Width - 1});
-                _currentTurn++;
-                IPlayerLayer[] playerLayers = game.Grid.Layers.Where(x => x is IPlayerLayer).Cast<IPlayerLayer>().ToArray();
-
-                return; 
-
-            }
-
-
-
+            //find the coords of the player in Data
             Coordinates playerPosition = null;
             for (int i = 0; i < game.Grid.Height; i++)
                 for (int o = 0; o < game.Grid.Width; o++)
@@ -97,6 +74,17 @@
                         playerPosition = new Coordinates() { Y = i, X = o };
 
 
+
+            if (_currentTurn == 0)
+            {
+                game.DrawMessage($"{PlayerName} shall choose next!", 2000);
+                //find the true in Data
+                selectedLayer.SetCurrentPointer(playerPosition);
+                _currentTurn++;
+
+            }
+
+            
             switch (ki.Key)
             {
                 case ConsoleKey.UpArrow:
@@ -160,13 +148,11 @@
                     //foreach (var coord in this.GetAttackedCoords(game.Grid))
                     //    blockLayer.Block(coord);
                     blockLayer.Block(selectedLayer.CurrentPointer);
-
+                    blockLayer.Block(new Coordinates(0, 0));
+                    blockLayer.Block(new Coordinates(game.Grid.Width - 1, game.Grid.Height - 1));
                     this.OnTurnDone();
 
-                    if (_currentTurn <= this.RequiredTurns + 1) {
-
-                    }
-                    else _currentTurn = 0;
+                    _currentTurn = 0;
                     break;
             }
         }
