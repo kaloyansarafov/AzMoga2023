@@ -62,6 +62,7 @@
 
         public void Start()
         {
+            // SAVE THIS LOGIC
             Console.Clear();
             Console.CursorVisible = false;
             DrawMessage("Use Arrow Keys to move and Enter to place a queen!", 3000);
@@ -83,6 +84,7 @@
 
         private void DrawGrid()
         {
+            // THIS LOGIC NEEDS CHANGES
             var previousGrid = this.Grid.PreviousState;
             var tempGrid = this.Grid.ConstructGrid();
             int rows = tempGrid.GetLength(0);
@@ -91,6 +93,7 @@
 
             if (previousGrid is null || previousGrid[0, 0] is null)
             {
+                // THIS NEEDS TO GENERATE THE INITIAL BOARD, WITH THE INITIAL NUMBER GENERATION
                 Console.WriteLine($".-{new string('-', (cols * 3) - 2)}-.");
                 for (int y = 0; y < rows; y++)
                 {
@@ -110,6 +113,7 @@
             }
             else
             {
+                // THIS LOGIC GETS SAVED
                 for (int y = 0; y < rows; y++)
                 {
                     for (int x = 0; x < cols; x++)
