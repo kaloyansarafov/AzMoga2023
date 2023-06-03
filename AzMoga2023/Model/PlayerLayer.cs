@@ -16,17 +16,10 @@
             PlayerName = pn;
         }
 
-        private bool CanPlaceQueen(int row, int col, Grid grid) => 
-            grid.Layers.Where(x => x is IPlayerLayer)
-                .Cast<IPlayerLayer>()
-                .All(x => !x.IsPlaceOccupied(row, col));
-
+       
         public bool IsPlaceOccupied(int row, int col)
         {
-            return AttackedRows.Contains(row) ||
-                        AttackedColumns.Contains(col) ||
-                        AttackedLeftDiagonals.Contains(col - row) ||
-                        AttackedRightDiagonals.Contains(col + row);
+            return BlockedCoordinates.Contains(new Coordinates(row, col));
         }
 
         private void MarkPositions(int row, int col)
@@ -59,8 +52,8 @@
         public HashSet<int> AttackedColumns = new();
         public HashSet<int> AttackedLeftDiagonals = new();
         public HashSet<int> AttackedRightDiagonals = new();
+        public HashSet<Coordinates> BlockedCoordinates = new();
 
-        public Coordinates OriginalPosition { get; private set; }
         private void HandleConsole(Game game, ConsoleKeyInfo ki)
         {
             var selectedLayer = (SelectedLayer)game.Grid.Layers.First(l => l is SelectedLayer);
@@ -116,11 +109,14 @@
                     break;
                 case ConsoleKey.Enter:
 
-                  
 
-                    //MarkPositions(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X);
+                    if (IsPlaceOccupied(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X))
+                    {
+                        game.DrawMessage($"{PlayerName} shall not be placing here, it's either occupied by the opponent or the player himself!", 6000);
+                        break;
+                    }
 
-                    //clear the Data matrix 
+
                     for (int i = 0; i < game.Grid.Height; i++)
                         for (int o = 0; o < game.Grid.Width; o++)
                             this.Data[i, o] = false;
@@ -149,6 +145,7 @@
                     blockLayer.Block(selectedLayer.CurrentPointer);
                     blockLayer.Block(new Coordinates(0, 0));
                     blockLayer.Block(new Coordinates(game.Grid.Width - 1, game.Grid.Height - 1));
+                    BlockedCoordinates.Add(selectedLayer.CurrentPointer);
                     this.OnTurnDone();
 
                     _currentTurn = 0;

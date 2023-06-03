@@ -45,10 +45,7 @@
             
             var blockLayer = (BlockLayer)game.Grid.Layers.First(l => l is BlockLayer);
 
-            foreach (var Coord in this.GetAttackedCoords(game.Grid))
-            {
-                blockLayer.Block(Coord);
-            }
+          
             
             IPlayerLayer[] playerLayers = game.Grid.Layers
                 .Where(x => x is IPlayerLayer)
