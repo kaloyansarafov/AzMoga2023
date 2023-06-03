@@ -24,11 +24,23 @@
                 {
                     for (int x = 0; x < layer.Data.GetLength(1); x++)
                     {
-                        if (layer.Data[y, x])
+                        if (layer.Data[y, x] && (layer is BaseLayer))
+                        {
                             finalGrid[y, x] = layer.DisplayValue;
+                        }
+                        else if (layer.Data[y, x] && !(layer is BaseLayer))
+                        {
+                            var previousCell = finalGrid[y, x];
+                            finalGrid[y, x] = new DisplayValue();
+                            finalGrid[y, x].DisplayBackground = layer.DisplayValue.DisplayBackground;
+                            finalGrid[y, x].DisplayForeground = layer.DisplayValue.DisplayForeground;
+                            finalGrid[y, x].Value = previousCell.Value;
+                        }       
                     }
                 }
             }
+
+            this.PreviousState = finalGrid;
             return finalGrid;
         }
     }

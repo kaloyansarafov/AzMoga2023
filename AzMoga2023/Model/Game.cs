@@ -84,7 +84,6 @@
 
         private void DrawGrid()
         {
-            // THIS LOGIC NEEDS CHANGES
             var previousGrid = this.Grid.PreviousState;
             var tempGrid = this.Grid.ConstructGrid();
             int rows = tempGrid.GetLength(0);
@@ -93,7 +92,6 @@
 
             if (previousGrid is null || previousGrid[0, 0] is null)
             {
-                // THIS NEEDS TO GENERATE THE INITIAL BOARD, WITH THE INITIAL NUMBER GENERATION
                 Console.WriteLine($".-{new string('-', (cols * 3) - 2)}-.");
                 for (int y = 0; y < rows; y++)
                 {
@@ -137,7 +135,7 @@
             }
 
 
-            this.Grid.PreviousState = this.Grid.ConstructGrid();
+            // this.Grid.PreviousState = this.Grid.ConstructGrid();
         }
 
         public void DrawMessage(string message, int duration)
