@@ -46,7 +46,7 @@
         }
 
         public override int ZIndex { get; protected set; } = 150;
-        public override DisplayValue DisplayValue { get; protected set; } = new DisplayValue() {Value = '⚪' };
+        public override DisplayValue DisplayValue { get; protected set; } = new DisplayValue() {Value = "⚪" };
         public override bool[,] Data { get; protected set; }
         public override int ConsolePriority { get; protected set; } = 0;
         public override int RequiredTurns { get; protected set; } = 1;

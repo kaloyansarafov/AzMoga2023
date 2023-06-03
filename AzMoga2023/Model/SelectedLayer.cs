@@ -12,7 +12,7 @@ public class SelectedLayer : LayerBase
     public override int ZIndex { get; protected set; } = 200;
 
     public override DisplayValue DisplayValue { get; protected set; } = new DisplayValue()
-        {Value = '+', DisplayBackground = ConsoleColor.DarkCyan, DisplayForeground = ConsoleColor.White};
+        {Value = "+", DisplayBackground = ConsoleColor.DarkCyan, DisplayForeground = ConsoleColor.White};
 
     public override bool[,] Data { get; protected set; }
     public override int ConsolePriority { get; protected set; }
