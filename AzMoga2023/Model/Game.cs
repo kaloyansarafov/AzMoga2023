@@ -94,7 +94,7 @@ namespace AzMogaTukITam.Model
 
             if (previousGrid is null || previousGrid[0, 0] is null)
             {
-                Console.WriteLine($".-{new string('-', (cols * 3) - 2)}-.");
+                Console.WriteLine($".-{new string('-', (cols * 5) - 2)}-.");
                 for (int y = 0; y < rows; y++)
                 {
                     Console.Write("|");
@@ -109,7 +109,7 @@ namespace AzMogaTukITam.Model
                     }
                     Console.WriteLine("|");
                 }
-                Console.WriteLine($".-{new string('-', (cols * 3) - 2)}-.");
+                Console.WriteLine($".-{new string('-', (cols * 5) - 2)}-.");
             }
             else
             {

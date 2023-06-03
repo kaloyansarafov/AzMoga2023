@@ -48,7 +48,7 @@ static int[] ReadGridSize()
         {
             Console.WriteLine("Please enter the grid dimensions in the format: '[width],[height]'");
             var sizes = Console.ReadLine().Split(",").Select(int.Parse).ToArray();
-            if (sizes.Length != 2 || sizes.Any(x => x > 201 || x < 4)) throw new Exception();
+            if (sizes.Length != 2 || sizes.Any(x => x > 90 || x < 4)) throw new Exception();
             return sizes;
         }
         catch (Exception ex)

@@ -5,10 +5,10 @@
         public BaseLayer(Grid grid) : base(grid)
         {
             for (int y = 0; y < this.Data.GetLength(0); y++)
-            for (int x = 0; x < this.Data.GetLength(1); x++)
-                this.Data[y, x] = true;
+                for (int x = 0; x < this.Data.GetLength(1); x++)
+                    this.Data[y, x] = true;
 
-            NumbersData = CreateNumbersData(this.Data.GetLength(1), this.Data.GetLength(0));
+            NumbersData = CreateNumbersData(this.Data.GetLength(0), this.Data.GetLength(1));
             DisplayData = CreateDisplayData(NumbersData);
         }
 
@@ -29,7 +29,7 @@
             var random = new Random();
             var numbersData = new string[rows, cols];
             var operations = new List<string> {"+1 ", "-1 ", "x2 ", "x0 ", "/2 "};
-            var operationTypes = new List<string> {"+", "-", "*", "/"};
+            var operationTypes = new List<string> {"+", "+","-", "-", "*", "/"};
 
             // Add one of each operation to the grid
             foreach (var operation in operations)
@@ -39,8 +39,8 @@
                 numbersData[row, col] = operation;
             }
 
-            numbersData[0, 0] = "0";
-            numbersData[rows - 1, cols - 1] = "0";
+            numbersData[0, 0] = "+0 ";
+            numbersData[rows - 1, cols - 1] = "+0 ";
 
             for (int i = 0; i < rows; i++)
             {
@@ -53,6 +53,11 @@
                         string numberString = randomOperation;
 
                         numberString += Math.Abs(randomNumber).ToString();
+
+                        if (Math.Abs(randomNumber) < 10)
+                        {
+                            numberString += " ";
+                        }
 
                         numbersData[i, j] = numberString;
                     }
