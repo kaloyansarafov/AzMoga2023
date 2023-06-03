@@ -25,7 +25,6 @@
         public string PlayerName { get; set; }
         public double Score { get; set; }
 
-        public int Score = 0;
         public HashSet<Coordinates> BlockedCoordinates = new();
 
 
@@ -100,7 +99,7 @@
             var x = place.X;
             var y = place.Y;
             Coordinates bestPlace = null;
-            int bestScore = int.MinValue;
+            double bestScore = double.MinValue;
 
             for (int i = y - 1; i <= y + 1; i++)
             {
@@ -148,7 +147,7 @@
         private Coordinates? FindPlaceWithLowestScore(Grid grid, BlockLayer blockLayer, string[,] numbersData)
         {
             Coordinates? bestPlace = null;
-            int bestScore = int.MaxValue;
+            double bestScore = double.MaxValue;
 
             for (int i = 0; i < grid.Height; i++)
             {

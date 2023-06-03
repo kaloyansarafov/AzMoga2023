@@ -159,9 +159,10 @@ namespace AzMogaTukITam.Model
 
             var players = this.Grid.Layers
                 .Where(x => x is IPlayerLayer)
+                .Cast<IPlayerLayer>()
                 .ToArray();
 
-            string scoresMessage = $"| {((PlayerLayer)players[0]).PlayerName} Score: {((PlayerLayer)players[0]).Score:F2}  | {((PlayerLayer)players[1]).PlayerName} Score: {((PlayerLayer)players[1]).Score:F2} |";
+            string scoresMessage = $"| {(players[0]).PlayerName} Score: {(players[0]).Score:F2}  | {(players[1]).PlayerName} Score: {(players[1]).Score:F2} |";
             Console.SetCursorPosition(0, 0);
             Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
             Console.WriteLine(scoresMessage);
