@@ -67,7 +67,7 @@ namespace AzMogaTukITam.Model
             // SAVE THIS LOGIC
             Console.Clear();
             Console.CursorVisible = false;
-            DrawMessage("Use Arrow Keys to move and Enter to place a queen!", 3000);
+            DrawMessage("Use the Arrow keys to move and Enter to move your piece!", 3000);
             
             while (!this._gameEnded)
             {
@@ -110,6 +110,12 @@ namespace AzMogaTukITam.Model
                     Console.WriteLine("|");
                 }
                 Console.WriteLine($".-{new string('-', (cols * 5) - 2)}-.");
+                
+                var players = this.Grid.Layers.Where(x => x is PlayerLayer).ToArray();
+                string scoresMessage = $"| {((PlayerLayer)players[0]).PlayerName} Score: PH  | {((PlayerLayer)players[1]).PlayerName} Score: PH |";
+                Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
+                Console.WriteLine(scoresMessage);
+                Console.WriteLine($".-{new string('-', scoresMessage.Length - 4)}-.");
             }
             else
             {

@@ -60,40 +60,85 @@
         public HashSet<int> AttackedLeftDiagonals = new();
         public HashSet<int> AttackedRightDiagonals = new();
 
+        public Coordinates OriginalPosition { get; private set; }
         private void HandleConsole(Game game, ConsoleKeyInfo ki)
         {
             var selectedLayer = (SelectedLayer)game.Grid.Layers.First(l => l is SelectedLayer);
-            
-            if (_currentTurn == 0)
+
+        //find the coords of the player in Data
+
+            if (_currentTurn == 0 && PlayerName == "Player 1")
             {
                 game.DrawMessage($"{PlayerName} shall choose next!", 2000);
-                selectedLayer.SetCurrentPointer(new Coordinates() { Y = game.Grid.Height / 2, X = game.Grid.Width/2 });
+                selectedLayer.SetCurrentPointer(new Coordinates() { Y = 0, X = 0 });
+                this.Data[0,0] = true;
                 _currentTurn++;
+                IPlayerLayer[] playerLayers = game.Grid.Layers.Where(x => x is IPlayerLayer).Cast<IPlayerLayer>().ToArray();
+                return;
             }
-            
+            else if(_currentTurn == 0 && PlayerName == "Player 2")
+            {
+                this.Data[game.Grid.Height - 1, game.Grid.Width - 1] = true;
+                selectedLayer.SetCurrentPointer(new Coordinates() { Y = game.Grid.Height -1, X = game.Grid.Width - 1});
+                _currentTurn++;
+                IPlayerLayer[] playerLayers = game.Grid.Layers.Where(x => x is IPlayerLayer).Cast<IPlayerLayer>().ToArray();
+
+                return; 
+
+            }
+
+
+
+            Coordinates playerPosition = null;
+            for (int i = 0; i < game.Grid.Height; i++)
+                for (int o = 0; o < game.Grid.Width; o++)
+                    if (this.Data[i, o])
+                        playerPosition = new Coordinates() { Y = i, X = o };
+
+
             switch (ki.Key)
             {
                 case ConsoleKey.UpArrow:
+                    if (selectedLayer.CurrentPointer.Y - 1 < playerPosition.Y - 1)
+                    {
+                        break;
+                    }
                     selectedLayer.MoveCurrentPointer(new Coordinates() { Y = -1 });
                     break;
                 case ConsoleKey.DownArrow:
+                    if (selectedLayer.CurrentPointer.Y + 1 > playerPosition.Y + 1)
+                    {
+                        break;
+                    }
                     selectedLayer.MoveCurrentPointer(new Coordinates() { Y = 1 });
                     break;
                 case ConsoleKey.RightArrow:
+                    if (selectedLayer.CurrentPointer.X + 1 > playerPosition.X + 1)
+                    {
+                        break;
+                    }
                     selectedLayer.MoveCurrentPointer(new Coordinates() { X = 1 });
                     break;
                 case ConsoleKey.LeftArrow:
+                    if (selectedLayer.CurrentPointer.X - 1 < playerPosition.X - 1)
+                    {
+                        break;
+                    }
                     selectedLayer.MoveCurrentPointer(new Coordinates() { X = -1 });
                     break;
                 case ConsoleKey.Enter:
 
-                    if (!CanPlaceQueen(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X, game.Grid))
-                    {
-                        game.DrawMessage($"{PlayerName} shall not be placing here, it's either occupied by the opponent or the player himself!", 6000);
-                        break;
-                    }
+                  
 
-                    MarkPositions(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X);
+                    //MarkPositions(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X);
+
+                    //clear the Data matrix 
+                    for (int i = 0; i < game.Grid.Height; i++)
+                        for (int o = 0; o < game.Grid.Width; o++)
+                            this.Data[i, o] = false;
+                    
+
+
                     this.Data[selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X] = true;
 
                     IPlayerLayer[] playerLayers = game.Grid.Layers.Where(x => x is IPlayerLayer).Cast<IPlayerLayer>().ToArray();
@@ -111,13 +156,15 @@
                         game.EndGame(() => game.DrawMessage($"{PlayerName} Won!", 5000));
 
                     var blockLayer = (BlockLayer)game.Grid.Layers.First(l => l is BlockLayer);
-                    foreach (var coord in this.GetAttackedCoords(game.Grid))
-                        blockLayer.Block(coord);
+                    //foreach (var coord in this.GetAttackedCoords(game.Grid))
+                    //    blockLayer.Block(coord);
+                    blockLayer.Block(selectedLayer.CurrentPointer);
 
                     this.OnTurnDone();
 
-                    if (_currentTurn <= this.RequiredTurns + 1)
-                        selectedLayer.SetCurrentPointer(new Coordinates() { Y = game.Grid.Height / 2, X = game.Grid.Width / 2 });
+                    if (_currentTurn <= this.RequiredTurns + 1) {
+
+                    }
                     else _currentTurn = 0;
                     break;
             }
