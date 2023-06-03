@@ -10,18 +10,6 @@
 
             NumbersData = CreateNumbersData(this.Data.GetLength(1), this.Data.GetLength(0));
             DisplayData = CreateDisplayData(NumbersData);
-            
-            for (int y = 0; y < NumbersData.GetLength(0); y++)
-            {
-                for (int x = 0; x < NumbersData.GetLength(1); x++)
-                {
-                    Console.Write(NumbersData[y, x] + " ");
-                }
-
-                Console.WriteLine();
-            }
-
-            Environment.Exit(0);
         }
 
         public override int ZIndex { get; protected set; } = 0;
