@@ -52,8 +52,9 @@
         public override int RequiredTurns { get; protected set; } = 1;
         public override Action<Game, ConsoleKeyInfo> ConsoleAction { get; protected set; }
         public override Action<Game> UpdateAction { get; protected set; }
-
         public string PlayerName { get; private set; }
+        public double Score { get; set; }
+
 
         public HashSet<int> AttackedRows = new();
         public HashSet<int> AttackedColumns = new();
