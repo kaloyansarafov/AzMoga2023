@@ -89,7 +89,23 @@
                 {
                     if (resultArray[i, j] == null)
                     {
-                        resultArray[i, j] = array[i, j];
+                        string numberString = array[i, j];
+
+                        if (!string.IsNullOrEmpty(numberString))
+                        {
+                            if (numberString.StartsWith("+") || numberString.StartsWith("-") || numberString.StartsWith("x") || numberString.StartsWith("/"))
+                            {
+                                int randomNumber = new Random().Next(0, 1 * Math.Max(rows, cols) + 1);
+                                numberString = numberString.Substring(0, 1) + randomNumber.ToString();
+
+                                if (Math.Abs(randomNumber) < 10)
+                                {
+                                    numberString += " ";
+                                }
+                            }
+                        }
+
+                        resultArray[i, j] = numberString;
                     }
                 }
             }

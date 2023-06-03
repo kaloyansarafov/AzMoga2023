@@ -52,7 +52,7 @@
         public override int RequiredTurns { get; protected set; } = 1;
         public override Action<Game, ConsoleKeyInfo> ConsoleAction { get; protected set; }
         public override Action<Game> UpdateAction { get; protected set; }
-        public string PlayerName { get; private set; }
+        public string PlayerName { get; set; }
         public double Score { get; set; }
 
 
@@ -130,7 +130,31 @@
 
                     this.Data[selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X] = true;
 
-                    IPlayerLayer[] playerLayers = game.Grid.Layers.Where(x => x is IPlayerLayer).Cast<IPlayerLayer>().ToArray();
+                    string cellValue = game.Grid.Layers
+                        .Where(x => x is BaseLayer)
+                        .Cast<BaseLayer>().First()
+                        .NumbersData[selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X];
+
+                    switch (cellValue[0])
+                    {
+                        case '+':
+                            this.Score += int.Parse(cellValue.Substring(1));
+                            break;
+                        case '-':
+                            this.Score -= int.Parse(cellValue.Substring(1));
+                            break;
+                        case '*':
+                            this.Score *= int.Parse(cellValue.Substring(1));
+                            break;
+                        case '/':
+                            this.Score /= int.Parse(cellValue.Substring(1));
+                            break;
+                    }
+
+                    IPlayerLayer[] playerLayers = game.Grid.Layers
+                        .Where(x => x is IPlayerLayer)
+                        .Cast<IPlayerLayer>().ToArray();
+
                     bool opponentCanMove = false;
                     for (int i = 0; i < game.Grid.Height; i++)
                     {
@@ -142,7 +166,21 @@
                     }
                     
                     if (!opponentCanMove)
-                        game.EndGame(() => game.DrawMessage($"{PlayerName} Won!", 5000));
+                        game.EndGame(() => {
+                            double highestScore = -1;
+                            string winnerName = "";
+
+                            foreach (var playerLayer in playerLayers)
+                            {
+                                if (playerLayer.Score > highestScore)
+                                {
+                                    highestScore = playerLayer.Score;
+                                    winnerName = playerLayer.PlayerName;
+                                }
+                            }
+
+                            game.DrawMessage($"{winnerName} Won with a score of {highestScore}!", 5000);
+                        });
 
                     var blockLayer = (BlockLayer)game.Grid.Layers.First(l => l is BlockLayer);
                     //foreach (var coord in this.GetAttackedCoords(game.Grid))

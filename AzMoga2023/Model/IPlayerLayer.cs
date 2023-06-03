@@ -8,8 +8,8 @@ namespace AzMogaTukITam.Model
 {
     internal interface IPlayerLayer
     {
-
+        public string PlayerName { get; set; }
+        public double Score { get; set; }
         public bool IsPlaceOccupied(int y, int x);
-
     }
 }

@@ -22,7 +22,8 @@
         public override Action<Game, ConsoleKeyInfo> ConsoleAction { get; protected set; }
         public override Action<Game> UpdateAction { get; protected set; }
 
-        public string PlayerName { get; private set; }
+        public string PlayerName { get; set; }
+        public double Score { get; set; }
 
         public HashSet<int> AttackedRows = new();
         public HashSet<int> AttackedColumns = new();
@@ -55,17 +56,32 @@
                 .Cast<IPlayerLayer>()
                 .ToArray();
             
-            var oponentCanMove = false;
+            var opponentCanMove = false;
             for (int i = 0; i < game.Grid.Height; i++)
             {
                 for (int o = 0; o < game.Grid.Width; o++)
                 {
                     if (playerLayers.All(pl => !pl.IsPlaceOccupied(i, o)))
-                        oponentCanMove = true;
+                        opponentCanMove = true;
                 }
             }
-            if (!oponentCanMove)
-                game.EndGame(() => game.DrawMessage($"{PlayerName} Won!", 5000));
+            if (!opponentCanMove)
+                game.EndGame(() => {
+                    double highestScore = -1;
+                    string winnerName = "";
+
+                    foreach (var playerLayer in playerLayers)
+                    {
+                        if (playerLayer.Score > highestScore)
+                        {
+                            highestScore = playerLayer.Score;
+                            winnerName = playerLayer.PlayerName;
+                        }
+                    }
+
+                    game.DrawMessage($"{winnerName} Won with a score of {highestScore}!", 5000);
+                });
+
 
         }
 
