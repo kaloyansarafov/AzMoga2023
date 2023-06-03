@@ -124,7 +124,7 @@ namespace AzMogaTukITam.Model
                             || previousValue.DisplayBackground != currentValue.DisplayBackground 
                             || previousValue.DisplayForeground != currentValue.DisplayForeground)
                         {
-                            Console.SetCursorPosition((5 * x) + 2, y + 4);
+                            Console.SetCursorPosition((5 * x) + 1, y + 4);
                             Console.BackgroundColor = currentValue.DisplayBackground;
                             Console.ForegroundColor = currentValue.DisplayForeground;
                             Console.Write($" {currentValue.Value} ");
