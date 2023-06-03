@@ -27,6 +27,7 @@
             // A method called TurnHandler is subscribed to the TurnDone event, and is responsible for incrementing the currentTurn var
             // When the required amount of turns get accomplished, it moves onto the next layer with required turns
 
+            // SAVE THIS LOGIC
             LayerBase[] consoleLayers = this.Grid.Layers.Where(x => x.RequiredTurns > 0).OrderBy(x => x.ConsolePriority)
                 .ThenBy(x => x.ZIndex).ThenBy(x => x.LayerID).ToArray();
             if (consoleLayers is not null)
@@ -51,6 +52,7 @@
 
         private void TurnHandler(object temp, EventArgs args)
         {
+            // SAVE THIS LOGIC
             _currentTurn++;
             foreach (LayerBase layer in this.Grid.Layers)
             {
