@@ -185,24 +185,5 @@
         {
             return BlockedCoordinates.Contains(new Coordinates(row, col));
         }
-
-        //returns the score of a place, where it blocks the most open spaces in the 4 directions and diagonals
-        private int GetScore(int row, int column, Grid grid, HashSet<int> set)
-        {
-            int score = 0;
-            for (int i = 0; i < grid.Height; i++)
-            {
-                if (set.Contains(i))
-                    score++;
-            }
-
-            return score;
-        }
-
-
-        private bool CanPlaceQueen(int row, int col, Grid grid) =>
-            grid.Layers.Where(x => x is IPlayerLayer)
-                .Cast<IPlayerLayer>()
-                .All(x => !x.IsPlaceOccupied(row, col));
     }
 }
