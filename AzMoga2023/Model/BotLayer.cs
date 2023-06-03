@@ -23,6 +23,8 @@
         public override Action<Game> UpdateAction { get; protected set; }
 
         public string PlayerName { get; private set; }
+        
+        public int score = 0;
 
         public HashSet<int> AttackedRows = new();
         public HashSet<int> AttackedColumns = new();
@@ -34,7 +36,7 @@
         private void HandleUpdate(Game game)
         {
             game.DrawMessage("Bot's thinking about it...", 1000);   
-            var botChoice = FindBestPlace(game.Grid);
+            var botChoice = FindBestPlaceFromCoordinates(game.Grid);
 
             if (botChoice == null)
             {
@@ -55,44 +57,81 @@
                 .Cast<IPlayerLayer>()
                 .ToArray();
             
-            var oponentCanMove = false;
+            var opponentCanMove = false;
             for (int i = 0; i < game.Grid.Height; i++)
             {
                 for (int o = 0; o < game.Grid.Width; o++)
                 {
                     if (playerLayers.All(pl => !pl.IsPlaceOccupied(i, o)))
-                        oponentCanMove = true;
+                        opponentCanMove = true;
                 }
             }
-            if (!oponentCanMove)
+            if (!opponentCanMove)
                 game.EndGame(() => game.DrawMessage($"{PlayerName} Won!", 5000));
 
         }
 
-        //algorithm to find the best place to put a queen, where it blocks the most open spaces in the 4 directions and diagonals
-        public Coordinates? FindBestPlace(Grid grid)
+        public Coordinates? FindBestPlaceFromCoordinates(Grid grid, Coordinates place)
         {
+            var baseLayer = grid.Layers.OfType<BaseLayer>().First();
+            var blockLayer = grid.Layers.OfType<BlockLayer>().First();
+            var numbersData = baseLayer.NumbersData;
+            var x = place.X;
+            var y = place.Y;
             Coordinates bestPlace = null;
-            int bestScore = -1;
-            for (int i = 0; i < grid.Height; i++)
+            int bestScore = int.MinValue;
+
+            for (int i = y - 1; i <= y + 1; i++)
             {
-                for (int j = 0; j < grid.Width; j++)
+                if (i < 0 || i >= grid.Height) 
                 {
-                    if (CanPlaceQueen(i, j, grid))
+                    continue;
+                }
+
+                for (int j = x - 1; j <= x + 1; j++)
+                {
+                    if (j < 0 || j >= grid.Width || blockLayer.Data[i, j] || IsPlaceOccupied(i, j) || (i == y && j == x))
                     {
-                        int score = 0;
-                        score += GetScore(i, j, grid, AttackedRows);
-                        score += GetScore(i, j, grid, AttackedColumns);
-                        score += GetScore(i, j, grid, AttackedLeftDiagonals);
-                        score += GetScore(i, j, grid, AttackedRightDiagonals);
-                        if (score > bestScore)
-                        {
-                            bestScore = score;
-                            bestPlace = new Coordinates(i, j);
-                        }
+                        continue;
+                    }
+
+                    var operation = numbersData[i, j][0];
+                    var operand = int.Parse(numbersData[i, j].Substring(1));
+
+                    switch (operation)
+                    {
+                        case '*':
+                            if (score * operand > bestScore)
+                            {
+                                bestScore = score * operand;
+                                bestPlace = new Coordinates(i, j);
+                            }
+                            break;
+                        case '/':
+                            if (score / operand > bestScore)
+                            {
+                                bestScore = score / operand;
+                                bestPlace = new Coordinates(i, j);
+                            }
+                            break;
+                        case '+':
+                            if (score + operand > bestScore)
+                            {
+                                bestScore = score + operand;
+                                bestPlace = new Coordinates(i, j);
+                            }
+                            break;
+                        case '-':
+                            if (score - operand > bestScore)
+                            {
+                                bestScore = score - operand;
+                                bestPlace = new Coordinates(i, j);
+                            }
+                            break;
                     }
                 }
             }
+
             return bestPlace;
         }
 
