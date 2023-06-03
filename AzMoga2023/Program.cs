@@ -15,8 +15,8 @@ switch (selection)
         Game mainGame = new Game(gridSize[0], gridSize[1], new GameContext());
         mainGame.Grid.Layers.Add(new BaseLayer(mainGame.Grid));
         mainGame.Grid.Layers.Add(new BlockLayer(mainGame.Grid));
-        mainGame.Grid.Layers.Add(new PlayerLayer(mainGame.Grid, new DisplayValue() { Value = 'X', DisplayBackground = ConsoleColor.DarkBlue, DisplayForeground = ConsoleColor.White }, "Player 1"));
-        mainGame.Grid.Layers.Add(new BotLayer(mainGame.Grid, new DisplayValue() { Value = 'X', DisplayBackground = ConsoleColor.DarkRed, DisplayForeground = ConsoleColor.White }, "Bot 1"));
+        mainGame.Grid.Layers.Add(new PlayerLayer(mainGame.Grid, new DisplayValue() { Value = "X", DisplayBackground = ConsoleColor.DarkBlue, DisplayForeground = ConsoleColor.White }, "Player 1"));
+        mainGame.Grid.Layers.Add(new BotLayer(mainGame.Grid, new DisplayValue() { Value = "X", DisplayBackground = ConsoleColor.DarkRed, DisplayForeground = ConsoleColor.White }, "Bot 1"));
         mainGame.Grid.Layers.Add(new SelectedLayer(mainGame.Grid));
         mainGame.Start();
         break;
@@ -25,8 +25,8 @@ switch (selection)
         Game playerGame = new Game(gridSize[0], gridSize[1], new GameContext());
         playerGame.Grid.Layers.Add(new BaseLayer(playerGame.Grid));
         playerGame.Grid.Layers.Add(new BlockLayer(playerGame.Grid));
-        playerGame.Grid.Layers.Add(new PlayerLayer(playerGame.Grid, new DisplayValue() { Value= 'X', DisplayBackground = ConsoleColor.DarkBlue, DisplayForeground = ConsoleColor.White }, "Player 1"));
-        playerGame.Grid.Layers.Add(new PlayerLayer(playerGame.Grid, new DisplayValue() { Value = 'X', DisplayBackground = ConsoleColor.DarkRed, DisplayForeground = ConsoleColor.White }, "Player 2"));
+        playerGame.Grid.Layers.Add(new PlayerLayer(playerGame.Grid, new DisplayValue() { Value= "X", DisplayBackground = ConsoleColor.DarkBlue, DisplayForeground = ConsoleColor.White }, "Player 1"));
+        playerGame.Grid.Layers.Add(new PlayerLayer(playerGame.Grid, new DisplayValue() { Value = "X", DisplayBackground = ConsoleColor.DarkRed, DisplayForeground = ConsoleColor.White }, "Player 2"));
         playerGame.Grid.Layers.Add(new SelectedLayer(playerGame.Grid));
         playerGame.Start();
         break;
