@@ -45,6 +45,8 @@
         public override int RequiredTurns { get; protected set; } = 1;
         public override Action<Game, ConsoleKeyInfo> ConsoleAction { get; protected set; }
         public override Action<Game> UpdateAction { get; protected set; }
+        
+        private BlockLayer _blockLayer;
 
         public string PlayerName { get; private set; }
 
@@ -110,7 +112,7 @@
                 case ConsoleKey.Enter:
 
 
-                    if (IsPlaceOccupied(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X))
+                    if (IsPlaceOccupied(selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X) || game.Grid.Layers.First(x => x is BlockLayer).Data[selectedLayer.CurrentPointer.Y, selectedLayer.CurrentPointer.X])
                     {
                         game.DrawMessage($"{PlayerName} shall not be placing here, it's either occupied by the opponent or the player himself!", 6000);
                         break;
